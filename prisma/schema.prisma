@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  username    String   @unique
+  email       String   @unique
+  password    String
+  jobs        Job[]
+  complaints  Complaint[]
+  supports    SupportRequest[]
+  createdAt   DateTime @default(now())
+}
+
+model Category {
+  id        String @id @default(uuid())
+  name      String @unique
+  jobs      Job[]
+}
+
+model Job {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  status      JobStatus @default(PENDING)
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  createdAt   DateTime @default(now())
+  complaints  Complaint[]
+}
+
+model Complaint {
+  id        String   @id @default(uuid())
+  content   String
+  job       Job      @relation(fields: [jobId], references: [id])
+  jobId     String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+}
+
+model SupportCategory {
+  id        String @id @default(uuid())
+  name      String @unique
+  requests  SupportRequest[]
+}
+
+model SupportRequest {
+  id               String          @id @default(uuid())
+  content          String
+  supportCategory  SupportCategory @relation(fields: [categoryId], references: [id])
+  categoryId       String
+  user             User            @relation(fields: [userId], references: [id])
+  userId           String
+  createdAt        DateTime @default(now())
+}
+
+enum JobStatus {
+  PENDING      // Mới tiếp nhận
+  IN_PROGRESS  // Đang thực hiện
+  COMPLETED    // Đã hoàn thành
+  CANCELLED
+}
