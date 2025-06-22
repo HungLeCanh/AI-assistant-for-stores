@@ -8,17 +8,24 @@ const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
   const user = verifyAuth(req);
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const existingUser = await prisma.user.findUnique({
+    where: { id: user.userId }
+  });
+  if (!existingUser) {
+    return NextResponse.json({ error: "Người dùng không tồn tại" }, { status: 400 });
+  }
+
 
   const body = await req.json();
-  const { supportCategoryId, content } = body;
+  const { supportCategoryName, content } = body;
 
-  if (!supportCategoryId || !content) {
+  if (!supportCategoryName || !content) {
     return NextResponse.json({ error: "Thiếu supportCategory hoặc nội dung yêu cầu hỗ trợ" }, { status: 400 });
   }
 
-  const supportCategory = await prisma.job.findFirst({
+  const supportCategory = await prisma.supportCategory.findUnique({
     where: {
-      id: supportCategoryId,
+      name: supportCategoryName,
     },
   });
 
@@ -30,7 +37,7 @@ export async function POST(req: NextRequest) {
     data: {
       content,
       userId: user.userId,
-      categoryId: supportCategory.id,
+      categoryId: supportCategory.id
     },
   });
 
