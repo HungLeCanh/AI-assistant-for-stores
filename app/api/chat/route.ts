@@ -12,19 +12,6 @@ export async function POST(request: NextRequest) {
         { status: 401 }
       );
     }
-    // Giải mã token để lấy userId
-    let tempSessionId, tempUserName, tempEmail;// biến này dùng để lưu trữ ngữ cảnh chat của người dùng và chatbot trên n8n nha
-    try {
-      const decoded = JSON.parse(atob(token.split('.')[1]));
-      tempSessionId = decoded.userId; // Giả sử userId được lưu trong token
-      tempUserName = decoded.username; // Giả sử username được lưu trong token
-      tempEmail = decoded.email; // Giả sử email được lưu trong token
-    } catch (error) {
-      return NextResponse.json(
-        { error: 'Invalid token' + ' - ' + error }, 
-        { status: 401 }
-      );
-    }
     
     // Kiểm tra xem message có tồn tại không
     if (!message) {
@@ -38,7 +25,7 @@ export async function POST(request: NextRequest) {
 
 
     // Gọi API webhook với message
-    const webhookUrl = `${n8nURL}?message=${encodeURIComponent(message)}&sessionId=${encodeURIComponent(tempSessionId)}&username=${encodeURIComponent(tempUserName)}&email=${encodeURIComponent(tempEmail)}`;
+    const webhookUrl = `${n8nURL}?message=${encodeURIComponent(message)}`;
     
     const response = await fetch(webhookUrl, {
       method: 'GET',
