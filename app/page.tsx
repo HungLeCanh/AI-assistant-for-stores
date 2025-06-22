@@ -48,7 +48,7 @@ export default function LandingPage() {
       {/* Header */}
       <header className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-38 ">
           <div className="text-center">
             <div className="flex justify-center mb-8">
               <div className="p-4 bg-blue-500/20 rounded-full backdrop-blur-sm border border-blue-400/30">
@@ -65,8 +65,8 @@ export default function LandingPage() {
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-              Tự động tạo và quản lý công việc, khiếu nại, yêu cầu hỗ trợ thông qua AI chatbot thông minh. 
-              Tối ưu hóa quy trình làm việc của bạn với công nghệ hiện đại.
+              Hệ thống AI hỗ trợ tiếp nhận công việc và quản lý công việc, khiếu nại, yêu cầu hỗ trợ thông qua AI chatbot thông minh. 
+              Tối ưu hóa quy trình làm việc của khách hàng.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
