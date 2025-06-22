@@ -36,7 +36,7 @@ export default function LoginPage() {
         setError(data.error || 'Đăng nhập thất bại')
       }
     } catch (err) {
-      setError('Có lỗi xảy ra, vui lòng thử lại')
+      setError('Có lỗi xảy ra, vui lòng thử lại' + (err instanceof Error ? `: ${err.message}` : ''))
     } finally {
       setLoading(false)
     }

@@ -34,7 +34,7 @@ export default function RegisterPage() {
         setError(data.error || 'Đăng ký thất bại')
       }
     } catch (err) {
-      setError('Có lỗi xảy ra, vui lòng thử lại')
+      setError('Có lỗi xảy ra, vui lòng thử lại' + (err instanceof Error ? `: ${err.message}` : ''))
     } finally {
       setLoading(false)
     }
