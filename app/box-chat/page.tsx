@@ -24,6 +24,13 @@ export default function ChatPage() {
     const token = localStorage.getItem('token');
     if (!token) {
       window.location.href = '/login';
+    }else{
+      // Thêm tin nhắn bot mặc định khi mở giao diện
+      setMessages([{
+        id: uuidv4(),
+        text: `Xin chào! 👋\n\nTôi là trợ lý ảo, sẵn sàng hỗ trợ bạn với 3 chức năng chính:\n\n1. **Tạo công việc** – Bạn chỉ cần mô tả ngắn gọn công việc cần làm và địa chỉ thực hiện. Tôi sẽ giúp bạn tạo job phù hợp.\n2. **Gửi khiếu nại** – Nếu có vấn đề với công việc đã hoàn thành, hãy cho tôi biết. Tôi sẽ gửi khiếu nại giúp bạn.\n3. **Tạo yêu cầu hỗ trợ** – Khi cần trợ giúp bất kỳ vấn đề nào khác, bạn chỉ cần mô tả. Tôi sẽ xử lý ngay.\n\n💡 Ví dụ: *"Tôi cần thợ sửa điện tại nhà vào chiều mai."*\n\nBạn cần hỗ trợ gì hôm nay?`,
+        sender: 'bot'
+      }]);
     }
   }, []);
 
@@ -69,6 +76,7 @@ export default function ChatPage() {
         },
         body: JSON.stringify({ message: userMessage, token: localStorage.getItem('token') }),
       });
+
 
       const data = await response.json();
 
