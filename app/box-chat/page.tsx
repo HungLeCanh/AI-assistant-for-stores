@@ -64,9 +64,10 @@ export default function ChatPage() {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
+          authorization: `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: userMessage, token: localStorage.getItem('token')})
+        body: JSON.stringify({ message: userMessage, token: localStorage.getItem('token') }),
       });
 
       const data = await response.json();

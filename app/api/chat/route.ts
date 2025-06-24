@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { verifyAuth } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
-    // Lấy message từ request body
-    const { message, token } = await request.json();
-
-    // Kiểm tra xem token có hợp lệ không
-    if (!token) {
+    // Lấy token từ request headers
+    const user = verifyAuth(request);
+    if (!user) {
       return NextResponse.json(
         { error: 'Token is required' }, 
         { status: 401 }
       );
     }
+    // Lấy message từ request body
+    const { message, token } = await request.json();
     
     // Kiểm tra xem message có tồn tại không
     if (!message) {
