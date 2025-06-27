@@ -14,7 +14,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Token is required' }, { status: 401 });
     }
 
-    let { message, token } = await request.json();
+    let { token } = await request.json();
+    const { message } = await request.json();
     if (!message) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400 });
     }
@@ -43,8 +44,9 @@ export async function POST(request: NextRequest) {
       rateLimiter.set(userKey, { count: 1, timestamp: now });
     }
 
-    // tạm thời hardcode token
-    token = ""
+    // lấy hardcoded_token từ biến môi trường
+    // nếu không có biến môi trường thì sử dụng giá trị mặc định là ''
+    token = process.env.HARDCODED_TOKEN || '';
     // --- Gửi tới N8N ---
     const n8nURL = process.env.WEBHOOK_URL || 'https://n8n.portal-demo.online';
     const webhookUrl = `${n8nURL}?message=${encodeURIComponent(message)}`;
