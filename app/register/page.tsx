@@ -5,7 +5,7 @@ import { Bot, Mail, Lock, User, ArrowRight, Eye, EyeOff, AlertCircle, CheckCircl
 
 export default function RegisterPage() {
   const router = useRouter()
-  const [form, setForm] = useState({ username: '', email: '', password: '' })
+  const [form, setForm] = useState({ username: '', email: '', password: '' , confirmPassword: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
@@ -193,10 +193,36 @@ export default function RegisterPage() {
               )}
             </div>
 
+            {/* Password confirm field */}
+            <div className="space-y-2">
+              <label className="text-white font-medium text-sm">Xác nhận mật khẩu</label>
+              <div className="relative">
+                <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                  <Lock className="w-5 h-5 text-gray-400" />
+                </div>
+                <input
+                  name="confirmPassword"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Nhập lại mật khẩu"
+                  value={form.confirmPassword}
+                  onChange={handleChange}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
+                  className="w-full pl-12 pr-12 py-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl text-white placeholder-gray-400 focus:border-blue-400/50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
+            </div>
+
             {/* Submit Button */}
             <button
               onClick={handleSubmit}
-              disabled={loading || !form.username || !form.email || !form.password}
+              disabled={loading || !form.username || !form.email || !form.password || !form.confirmPassword || form.password !== form.confirmPassword}
               className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transform hover:scale-[1.02] transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3"
             >
               {loading ? (
