@@ -2,8 +2,9 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Send, LogOut, HelpCircle, X, User} from 'lucide-react';
+import { Send, LogOut, HelpCircle, X, User, Key} from 'lucide-react';
 import UserInfoPopup from './UserInfoPopup';
+import TokenStore from './TokenStore';
 
 type Message = {
   id: string;
@@ -17,6 +18,7 @@ export default function ChatPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [isUserInfoOpen, setIsUserInfoOpen] = useState(false)
+  const [isTokenStoreOpen, setIsTokenStoreOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   // Lấy thông tin user từ localStorage token(HS256), nếu không có hoặc hết hạn thì điều hướng về trang login
@@ -74,7 +76,7 @@ export default function ChatPage() {
           authorization: `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: userMessage, token: localStorage.getItem('token') }),
+        body: JSON.stringify({ message: userMessage, accessToken: localStorage.getItem('access_token') }),
       });
 
 
@@ -140,6 +142,13 @@ export default function ChatPage() {
               </div>
               
               <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => setIsTokenStoreOpen(true)}
+                  className="p-2 text-blue-300 hover:text-white hover:bg-blue-500/20 rounded-lg transition-all duration-200 backdrop-blur-sm border border-blue-400/20"
+                  title="Thông tin cá nhân"
+                >
+                  <Key size={20} />
+                </button>
                 <button
                   onClick={() => setIsUserInfoOpen(true)}
                   className="p-2 text-blue-300 hover:text-white hover:bg-blue-500/20 rounded-lg transition-all duration-200 backdrop-blur-sm border border-blue-400/20"
@@ -292,6 +301,11 @@ export default function ChatPage() {
         {/* User Info Popup */}
         {isUserInfoOpen && (
           <UserInfoPopup onClose={() => setIsUserInfoOpen(false)} />
+        )}
+
+        {/* Token Store Popup */}
+        {isTokenStoreOpen && (
+          <TokenStore onClose={() => setIsTokenStoreOpen(false)} />
         )}
 
       </div>
